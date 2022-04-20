@@ -5,4 +5,16 @@ services:
     volumes:
       - .:/app
     ports:
-      - 8000:8000
+      - 1234:8000
+
+  db:
+    image: mysql:5.7.22
+    restart: alwasy
+    environment:
+      MYSQL_DATABASE: ambassador
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
+    volumn:
+      - .dbdata:/var/lib/mysql
+    ports:
+      - 33066:3306
