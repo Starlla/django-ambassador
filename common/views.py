@@ -5,6 +5,8 @@ from rest_framework import exceptions
 
 from .serializers import UserSerializer
 
+from core.models import User
+
 # Create your views here.
 class RegisterAPIView(APIView):
     def post(self, request):
@@ -17,3 +19,19 @@ class RegisterAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+
+class LoginAPIView(APIView):
+    def post(self, request):
+        email = request.data["email"]
+        password = request.data["password"]
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            raise exceptions.AuthenticaationFailed("User not found!")
+
+        if not user.check_password(password):
+            raise exceptions.AuthenticationFailed("Incorrect Password!")
+
+        return Response(UserSerializer(user).data)
