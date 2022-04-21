@@ -1,4 +1,5 @@
 import jwt, datetime
+from app import settings
 
 
 class JWTAuthentication:
@@ -9,4 +10,4 @@ class JWTAuthentication:
             "iat": datetime.datetime.utcnow(),
         }
 
-        return jwt.encode(payload, settings.SECRET_KEY, algorithm="HS526")
+        return jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
